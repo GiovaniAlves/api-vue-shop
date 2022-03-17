@@ -34,7 +34,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUser(string $email)
     {
-        $user = $this->entity->where('email', $email)->get();
+        $user = $this->entity->where('email', $email)->firstOrFail();
         return $user;
     }
 }
