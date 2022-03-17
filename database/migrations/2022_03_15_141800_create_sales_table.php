@@ -25,7 +25,6 @@ class CreateSalesTable extends Migration
            $table->id();
            $table->integer('quantity');
            $table->enum('status', ['ordered', 'paid', 'unpaid', 'delivered'])->default('ordered');
-           $table->float('value');
            $table->unsignedBigInteger('sale_id');
            $table->unsignedBigInteger('product_id');
 
