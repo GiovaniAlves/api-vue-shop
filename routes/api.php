@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\{
-    Auth\AuthController
+    Auth\AuthController,
+    ProductController
 };
 
 Route::group([
@@ -18,7 +18,14 @@ Route::group([
         'middleware' => ['auth:sanctum']
     ], function () {
 
+        Route::post('/user', [AuthController::class, 'user']);
         Route::post('/logout', [AuthController::class, 'logout']);
 
+        Route::group([
+            'middleware' => ['can:access-dashboard']
+        ], function () {
+
+            Route::get('/product', [ProductController::class, 'index']);
+        });
     });
 });
