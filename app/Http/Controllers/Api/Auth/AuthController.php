@@ -8,6 +8,8 @@ use App\Http\Requests\StoreUserFormRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -55,5 +57,15 @@ class AuthController extends Controller
             'user' => new UserResource($user),
             'token' => $token
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        // Revoke all tokens client...
+        $user->tokens()->delete();
+
+        return response([], 204);
     }
 }
