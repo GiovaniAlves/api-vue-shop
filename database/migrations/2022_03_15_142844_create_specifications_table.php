@@ -15,12 +15,8 @@ class CreateSpecificationsTable extends Migration
     {
         Schema::create('specifications', function (Blueprint $table) {
             $table->id();
-            $table->string('brand')->nullable();
-            $table->string('screen')->nullable();
-            $table->string('processor')->nullable();
-            $table->string('memory')->nullable();
-            $table->string('hd')->nullable();
-            $table->string('ssd')->nullable();
+            $table->string('name');
+            $table->string('description')->nullable();
 
             $table->timestamps();
         });

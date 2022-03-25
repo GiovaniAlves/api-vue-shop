@@ -7,29 +7,26 @@ use App\Http\Requests\AuthFormRequest;
 use App\Http\Requests\StoreUserFormRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /*** @var UserService */
-    protected $userService;
+    private $repository;
 
-    /*** @param UserService $userService */
-    public function __construct(UserService $userService)
+    public function __construct(User $user)
     {
-        $this->userService = $userService;
+        $this->repository = $user;
     }
 
     /**
      * @param StoreUserFormRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function register(StoreUserFormRequest $request)
     {
-        $user = $this->userService->createNewUser($request->all());
+        $request['password'] = bcrypt($request['password']);
+        $user = $this->repository->create($request->all());
 
         $token = $user->createToken('vue-shop')->plainTextToken;
 
@@ -41,11 +38,11 @@ class AuthController extends Controller
 
     /**
      * @param AuthFormRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function login(AuthFormRequest $request)
     {
-        $user = $this->userService->getUser($request->email);
+        $user = $this->repository->where('email', $request->email)->firstorFail();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response(['message' => 'Credenciais Inválidas!'], 404);
@@ -61,7 +58,7 @@ class AuthController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function user(Request $request)
     {
@@ -74,13 +71,13 @@ class AuthController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
     {
         $user = $request->user();
 
-        // Revoke all tokens client...
+        // Revoke all tokens client.
         $user->tokens()->delete();
 
         return response([], 204);

@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\{
     Auth\AuthController,
-    ProductController
+    ProductController,
+    SpecificationController
 };
 
 Route::group([
@@ -24,8 +25,8 @@ Route::group([
         Route::group([
             'middleware' => ['can:access-dashboard']
         ], function () {
-
-            Route::get('/product', [ProductController::class, 'index']);
+            Route::resource('/product', ProductController::class);
+            Route::resource('/specification', SpecificationController::class);
         });
     });
 });
