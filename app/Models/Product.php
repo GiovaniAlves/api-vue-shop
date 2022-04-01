@@ -10,6 +10,11 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'name', 'price', 'url', 'quantity', 'category', 'image_url'
+        'id', 'name', 'price', 'url', 'quantity', 'category', 'image'
     ];
+
+    public function specifications()
+    {
+        return $this->belongsToMany(Specification::class);
+    }
 }

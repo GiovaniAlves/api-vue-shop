@@ -23,14 +23,24 @@ class StoreUpdateProductFormRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        // Pegando o id para poder editar o campo url que é único em uma adição.
+        $id = $this->segment(5);
+
+        $rules = [
             'name' => 'required',
             'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'quantity' => 'required|integer',
+            'url' => "required|unique:products,url,{$id},id",
             'category' => 'required|string',
-            'image_url' => 'required|image',
+            'image' => 'required',
             'specifications' => 'required',
             'specifications.*.id' => 'required|exists:specifications,id'
         ];
+
+        if ($this->method() == 'PUT') {
+            $rules['image'] = ['nullable'];
+        }
+
+        return $rules;
     }
 }
