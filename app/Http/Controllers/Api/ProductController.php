@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateProductFormRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -20,13 +21,50 @@ class ProductController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
         $products = $this->repository->paginate(10);
 
-        return response($products);
+        return ProductResource::collection($products);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function search(Request $request)
+    {
+        $data = $request->all();
+
+        $categories = $data['categories'];
+        $orderBy = $data['orderBy'];
+
+        foreach ($orderBy as $key => $value) {
+            $orderByKey = $key;
+            $orderByValue = $value;
+        }
+
+        $products = $this->repository
+            ->where(function ($query) use ($categories) {
+                // Se tiver algum valor no categories entra
+                if ($categories) {
+                    foreach ($categories as $value) {
+                        $query->orWhere('category', $value);
+                    }
+                    return $query;
+                }
+            });
+
+        if ($orderBy) {
+            $products = $products->orderBy($orderByKey, $orderByValue)->paginate(2);
+        } else {
+            $products = $products->paginate(2);
+        }
+
+        return ProductResource::collection($products);
     }
 
     /**
@@ -134,8 +172,6 @@ class ProductController extends Controller
      */
     private function saveImage($image)
     {
-        $path = '';
-
         // Checa se a imagem tem uma strig base 64 válida
         if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
 
@@ -153,14 +189,14 @@ class ProductController extends Controller
 
             $dir = 'storage/products/';
             $name = Str::random() . '.' . $type;
-            $dirName = $dir.$name;
+            $dirName = $dir . $name;
 
-            $path = Image::make($file)->save(public_path($dirName));
+            $path = Image::make($file)->fit(500, 350)->save(public_path($dirName));
         } else {
             throw new \Exception('This is not a valid image');
         }
 
-        $relativePath = 'products/'.$path->basename;
+        $relativePath = 'products/' . $path->basename;
 
         return $relativePath;
     }

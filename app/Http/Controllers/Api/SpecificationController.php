@@ -18,13 +18,13 @@ class SpecificationController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
         $spefications = $this->repository->paginate(10);
 
-        return response($spefications);
+        return SpecificationResource::collection($spefications);
     }
 
     /**

@@ -26,6 +26,8 @@ Route::group([
             'middleware' => ['can:access-dashboard']
         ], function () {
             Route::resource('/product', ProductController::class);
+            Route::post('product/search', [ProductController::class, 'search']);
+
             Route::resource('/specification', SpecificationController::class);
         });
     });
