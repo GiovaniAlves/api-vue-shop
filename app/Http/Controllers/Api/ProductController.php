@@ -91,13 +91,16 @@ class ProductController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $idOrUrl
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($id)
+    public function show($idOrUrl)
     {
-        if (!$product = $this->repository->find($id)) {
+        // Usei o first pq ele não me devolve uma coletion e sim um App\Models\Product o msm que o find devolve.
+        $product = $this->repository->where('id', '=', $idOrUrl)->orWhere('url', $idOrUrl)->first();
+
+        if (!$product) {
             return response(['message' => 'Product not Found!'], 404);
         }
 

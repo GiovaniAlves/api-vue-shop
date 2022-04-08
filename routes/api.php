@@ -26,10 +26,13 @@ Route::group([
             'middleware' => ['can:access-dashboard']
         ], function () {
             Route::resource('/product', ProductController::class);
-            Route::post('product/search', [ProductController::class, 'search']);
 
             Route::resource('/specification', SpecificationController::class);
             Route::get('/allSpecifications', [SpecificationController::class, 'all']);
         });
     });
+
+    // Rotas da área aberta do site
+    Route::post('/product/search', [ProductController::class, 'search']);
+    Route::get('/product/{idOrUrl}', [ProductController::class, 'show']);
 });
