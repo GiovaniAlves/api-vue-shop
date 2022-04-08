@@ -28,6 +28,7 @@ class StoreUpdateProductFormRequest extends FormRequest
 
         $rules = [
             'name' => 'required',
+            'description' => 'required',
             'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'quantity' => 'required|integer',
             'url' => "required|unique:products,url,{$id},id",

@@ -28,6 +28,16 @@ class SpecificationController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function all()
+    {
+        $spefications = $this->repository->get();
+
+        return SpecificationResource::collection($spefications);
+    }
+
+    /**
      * @param StoreUpdateSpecificationFormRequest $request
      * @return \Illuminate\Http\Response
      */
@@ -41,7 +51,7 @@ class SpecificationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -82,7 +92,7 @@ class SpecificationController extends Controller
 
         $specification->delete();
 
-        return  response([], 204);
+        return response([], 204);
     }
 
 }

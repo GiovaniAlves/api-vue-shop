@@ -59,9 +59,9 @@ class ProductController extends Controller
             });
 
         if ($orderBy) {
-            $products = $products->orderBy($orderByKey, $orderByValue)->paginate(2);
+            $products = $products->orderBy($orderByKey, $orderByValue)->paginate(8);
         } else {
-            $products = $products->paginate(2);
+            $products = $products->paginate(8);
         }
 
         return ProductResource::collection($products);

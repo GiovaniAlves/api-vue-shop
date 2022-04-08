@@ -29,6 +29,7 @@ Route::group([
             Route::post('product/search', [ProductController::class, 'search']);
 
             Route::resource('/specification', SpecificationController::class);
+            Route::get('/allSpecifications', [SpecificationController::class, 'all']);
         });
     });
 });
