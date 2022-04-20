@@ -36,7 +36,7 @@ class ProductResource extends JsonResource
      */
     function strLimitWords(string $string, int $limit, string $pointer = "..."): string
     {
-        $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+        $string = trim(filter_var($string, FILTER_SANITIZE_STRING));
         $arrWords = explode(" ", $string);
         $numWords = count($arrWords);
 

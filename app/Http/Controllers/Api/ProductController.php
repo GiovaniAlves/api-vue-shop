@@ -135,6 +135,7 @@ class ProductController extends Controller
         }
 
         $product->update($data);
+
         // Excluindo todas as especificações
         $product->specifications()->detach();
 

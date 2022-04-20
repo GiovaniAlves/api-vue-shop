@@ -121,6 +121,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/sanctum" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/intervention/image" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fruitcake/php-cors" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cartalyst/stripe" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cartalyst/stripe-laravel" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

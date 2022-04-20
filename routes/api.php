@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\{
     Auth\AuthController,
     ProductController,
+    OrderController,
     SpecificationController
 };
 
@@ -29,6 +30,8 @@ Route::group([
 
             Route::resource('/specification', SpecificationController::class);
             Route::get('/allSpecifications', [SpecificationController::class, 'all']);
+
+            Route::resource('/order', OrderController::class);
         });
     });
 

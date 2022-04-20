@@ -13,22 +13,24 @@ class CreateSalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
+            $table->float('total');
+            $table->enum('status', ['ordered', 'paid', 'unpaid', 'delivered', 'canceled'])->default('ordered');
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        Schema::create('sale_product', function (Blueprint $table) {
+        Schema::create('order_product', function (Blueprint $table) {
            $table->id();
            $table->integer('quantity');
-           $table->enum('status', ['ordered', 'paid', 'unpaid', 'delivered'])->default('ordered');
-           $table->unsignedBigInteger('sale_id');
+           $table->float('price');
+           $table->unsignedBigInteger('order_id');
            $table->unsignedBigInteger('product_id');
 
-           $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
+           $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }

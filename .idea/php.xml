@@ -114,6 +114,8 @@
       <path value="$PROJECT_DIR$/vendor/laravel/sanctum" />
       <path value="$PROJECT_DIR$/vendor/intervention/image" />
       <path value="$PROJECT_DIR$/vendor/fruitcake/php-cors" />
+      <path value="$PROJECT_DIR$/vendor/cartalyst/stripe" />
+      <path value="$PROJECT_DIR$/vendor/cartalyst/stripe-laravel" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />
