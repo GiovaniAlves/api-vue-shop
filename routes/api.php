@@ -5,7 +5,8 @@ use App\Http\Controllers\Api\{
     Auth\AuthController,
     ProductController,
     OrderController,
-    SpecificationController
+    SpecificationController,
+    UserController
 };
 
 Route::group([
@@ -15,6 +16,7 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
 
+    // Rotas autenticadas
     Route::group([
         'prefix' => 'auth',
         'middleware' => ['auth:sanctum']
@@ -23,6 +25,7 @@ Route::group([
         Route::post('/user', [AuthController::class, 'user']);
         Route::post('/logout', [AuthController::class, 'logout']);
 
+        // Rotas do usuários adm
         Route::group([
             'middleware' => ['can:access-dashboard']
         ], function () {
@@ -31,8 +34,13 @@ Route::group([
             Route::resource('/specification', SpecificationController::class);
             Route::get('/allSpecifications', [SpecificationController::class, 'all']);
 
-            Route::resource('/order', OrderController::class);
+            Route::post('/user/search', [UserController::class, 'search']);
+
+            Route::post('/order/search', [OrderController::class, 'search']);
         });
+
+        // Rotas do usuários comuns
+        Route::resource('/order', OrderController::class);
     });
 
     // Rotas da área aberta do site

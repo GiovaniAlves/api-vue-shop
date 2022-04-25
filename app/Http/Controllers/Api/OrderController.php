@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSaleFormRequest;
-use App\Http\Resources\SaleResource;
+use App\Http\Requests\StoreOrderFormRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Product;
 use App\Models\Order;
 use Cartalyst\Stripe\Stripe;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -28,19 +29,20 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->order->paginate(10);
+        $id = auth()->user()->id;
+        $orders = $this->order->where('client_id', '=', $id)->get();
 
-        return SaleResource::collection($orders);
+        return OrderResource::collection($orders);
     }
 
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreSaleFormRequest  $request
+     * @param  StoreOrderFormRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSaleFormRequest $request)
+    public function store(StoreOrderFormRequest $request)
     {
         $data = $request->all();
 
@@ -49,7 +51,7 @@ class OrderController extends Controller
         DB::beginTransaction();
         $order = $this->order->create($data);
 
-        // Cadastrando os produtos comprados na tabela order_product e atualizando a quantidade dos produtos
+        // Cadastrando os produtos comprados na tabela order_product e atualizando a quantidade dos produtos na table products
         $products = $data['products'];
         $orderProducts = [];
 
@@ -73,6 +75,7 @@ class OrderController extends Controller
 
         // Efetuando o pagamento
         $allRight = $this->stripPayment($data);
+        // $allRight = true;
 
         if ($allRight === true) {
             $order->update( ['status' => 'paid'] );
@@ -82,7 +85,7 @@ class OrderController extends Controller
         }
 
         DB::commit();
-        return response(new SaleResource($order));
+        return response(new OrderResource($order));
     }
 
     /**
@@ -97,7 +100,12 @@ class OrderController extends Controller
             return response(['message' => 'Order not found!'], 404);
         }
 
-        return response(new SaleResource($order));
+        return response(new OrderResource($order));
+    }
+
+    public function search(Request $request)
+    {
+
     }
 
     /**

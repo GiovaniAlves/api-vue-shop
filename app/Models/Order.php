@@ -33,4 +33,12 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class, 'order_product');
     }
+
+    // Nessa função quero obter as quantidades e preços pagos nos produtos na data da compra.
+    public function orderProducts($order_id)
+    {
+        $orderProducts = OrderProduct::where('order_id', '=', $order_id)->get();
+
+        return $orderProducts;
+    }
 }
