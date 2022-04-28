@@ -6,8 +6,6 @@ Essa Api Foi desenvolvida para um (Sistema de E-commerce de Eletrônicos).
 
 ### Organização do Projeto
 
-- Controller: Responsável pela lógica mais simples e delegação das ações.
+- Controller: Responsável pela lógica e delegação das ações.
 - Form Request: Responsável por fazer as validações dos formulários.
 - Resource: Responsável por devolver os dados.
-- Services: Responsável por lidar com a lógica mais complexa da api.
-- Repositories: Responsável por lidar com as queries mais complexas da api.
