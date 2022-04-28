@@ -32,6 +32,7 @@ class ProductController extends Controller
 
 
     /**
+     * Rota da área aberta do site
      * @param Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
@@ -56,7 +57,7 @@ class ProductController extends Controller
                     }
                     return $query;
                 }
-            });
+            })->where('quantity', '>', 0);
 
         if ($orderBy) {
             $products = $products->orderBy($orderByKey, $orderByValue)->paginate(8);
@@ -91,14 +92,29 @@ class ProductController extends Controller
     }
 
     /**
-     * @param $idOrUrl
+     * @param $id
      * @return \Illuminate\Http\Response
      *
      */
-    public function show($idOrUrl)
+    public function show($id)
+    {
+        if (!$product = $this->repository->find($id)) {
+            return response(['message' => 'Product not Found!'], 404);
+        }
+
+        return response(new ProductResource($product));
+    }
+
+    /**
+     * Rota da área aberta do site
+     * @param $url
+     * @return \Illuminate\Http\Response
+     *
+     */
+    public function showProduct($url)
     {
         // Usei o first pq ele não me devolve uma coletion e sim um App\Models\Product o msm que o find devolve.
-        $product = $this->repository->where('id', '=', $idOrUrl)->orWhere('url', $idOrUrl)->first();
+        $product = $this->repository->where('url', $url)->first();
 
         if (!$product) {
             return response(['message' => 'Product not Found!'], 404);

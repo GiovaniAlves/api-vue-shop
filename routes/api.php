@@ -43,7 +43,7 @@ Route::group([
         Route::resource('/order', OrderController::class);
     });
 
-    // Rotas da área aberta do site
+    // Rotas da área aberta do site - Só devolvem produtos disponíveis
     Route::post('/product/search', [ProductController::class, 'search']);
-    Route::get('/product/{idOrUrl}', [ProductController::class, 'show']);
+    Route::get('/product/showProduct/{url}', [ProductController::class, 'showProduct']);
 });
