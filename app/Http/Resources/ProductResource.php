@@ -23,6 +23,7 @@ class ProductResource extends JsonResource
             'url' => $this->url,
             'quantity' => $this->quantity,
             'category' => $this->category,
+            'category_label' => $this->categoryOptions[$this->category],
             'image_url' => $this->image ? url("storage/$this->image") : '',
             'specifications' => SpecificationResource::collection($this->specifications)
         ];

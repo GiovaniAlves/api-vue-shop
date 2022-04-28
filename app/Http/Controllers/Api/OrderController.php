@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderFormRequest;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\ReportOrderCategoryResource;
+use App\Http\Resources\ReportOrderStatusResource;
 use App\Models\Product;
 use App\Models\Order;
 use Cartalyst\Stripe\Stripe;
@@ -103,9 +105,25 @@ class OrderController extends Controller
         return response(new OrderResource($order));
     }
 
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
+        $data = $request->all();
 
+        $data['month'] = substr($data['date'], 0, 2);
+        $data['year'] = substr($data['date'], 3, 5);
+
+        $orders = $this->order->search($data['month'], $data['year'], $data['type']);
+
+        if ($data['type'] === 'status') {
+            return response(ReportOrderStatusResource::collection($orders));
+        } else {
+            return response(ReportOrderCategoryResource::collection($orders));
+        }
     }
 
     /**

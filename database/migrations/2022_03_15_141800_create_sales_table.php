@@ -20,6 +20,7 @@ class CreateSalesTable extends Migration
             $table->enum('status', ['ordered', 'paid', 'unpaid', 'delivered', 'canceled'])->default('ordered');
             $table->timestamps();
 
+            /* TODO tem que testar pra ver se esse método impede a exclusão pois não excluir um venda  ->restrictOnDelete();*/
             $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
         });
 

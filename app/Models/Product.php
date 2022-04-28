@@ -13,6 +13,15 @@ class Product extends Model
         'id', 'name', 'description', 'price', 'url', 'quantity', 'category', 'image'
     ];
 
+    /**
+     * categorias
+     */
+    public $categoryOptions = [
+        'electronic' => 'Eletroeletrônico',
+        'hardware' => 'Hardware',
+        'home_appliance' => 'Eletrodoméstico'
+    ];
+
     public function specifications()
     {
         return $this->belongsToMany(Specification::class);
