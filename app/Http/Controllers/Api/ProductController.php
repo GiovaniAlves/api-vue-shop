@@ -114,7 +114,7 @@ class ProductController extends Controller
     public function showProduct($url)
     {
         // Usei o first pq ele não me devolve uma coletion e sim um App\Models\Product o msm que o find devolve.
-        $product = $this->repository->where('url', $url)->first();
+        $product = $this->repository->where('url', $url)->where('quantity', '>', 0)->first();
 
         if (!$product) {
             return response(['message' => 'Product not Found!'], 404);
