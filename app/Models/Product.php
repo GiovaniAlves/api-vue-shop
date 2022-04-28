@@ -26,4 +26,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Specification::class);
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
+    }
 }

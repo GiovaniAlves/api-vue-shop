@@ -44,7 +44,7 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'order_product');
     }
 
-    // Nessa função quero obter todas as informações, ex: qtd e preço, dos produtos na data da compra.
+    // Nessa função quero obter todas as informações do (pedido - venda), ex: qtd e preço, dos produtos na data da compra.
     public function orderProducts($order_id)
     {
         $orderProducts = OrderProduct::where('order_id', '=', $order_id)->get();

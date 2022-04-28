@@ -155,8 +155,12 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        if (!$product = $this->repository->find($id)) {
+        if (!$product = $this->repository->with('orders')->find($id)) {
             return response(['message' => 'Product not Found!'], 404);
+        }
+
+        if ($product->orders->count() > 0) {
+            return response(['message' => 'Não é possível excluir esse produto pois o mesmo possui vendas vinculadas!'], 403);
         }
 
         if (Storage::exists($product->image)) {
