@@ -16,8 +16,7 @@
         "laravel/framework": "^8.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.0",
-        "cartalyst/stripe-laravel": "^13.0",
-        "ext-gd": "*"
+        "cartalyst/stripe-laravel": "^13.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
